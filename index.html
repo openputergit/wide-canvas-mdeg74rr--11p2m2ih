@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwiftPe Sidebar</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-bg: #ffffff;
+            --sidebar-hover: #f8f9fa;
+        }
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background: linear-gradient(to right bottom, #ffffff, #f8f9fa);
+        }
+        .sidebar {
+            width: 280px;
+            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,0.16);
+        }
+        .sidebar.collapsed {
+            width: 80px;
+        }
+        .sidebar.collapsed:hover {
+            width: 280px;
+        }
+        .sidebar.collapsed .sidebar-text {
+            display: none;
+        }
+        .sidebar.collapsed:hover .sidebar-text {
+            display: block;
+        }
+        .search-container {
+            position: relative;
+        }
+        .search-results {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        .sidebar-expanded {
+            width: 280px;
+        }
+        .sidebar-collapsed {
+            width: 80px;
+        }
+        .menu-item:hover {
+            background: var(--sidebar-hover);
+        }
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .submenu.open {
+            max-height: 500px;
+        }
+        .bi-chevron-down {
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+        .profile-dropdown {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .profile-dropdown.open {
+            max-height: 200px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="sidebar sidebar-expanded fixed top-0 left-0 h-screen bg-white rounded-xl m-2.5" role="navigation" aria-label="Main Navigation">
+    <div class="h-full flex flex-col">
+        <!-- Logo -->
+        <div class="p-4 flex items-center justify-between">
+            <img src="https://swiftpe.com/assets/images/swiftpe.png" alt="SwiftPe" class="h-8">
+            <span class="ml-2 font-semibold text-lg sidebar-text">SwiftPe</span>
+            <button id="sidebarToggle" class="ml-auto text-gray-500 hover:text-gray-700">
+                <i class="bi bi-arrow-left-circle text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Search -->
+        <div class="px-4 py-2">
+            <div class="search-container">
+                <input type="text" id="menuSearch" placeholder="Search menu..." class="w-full px-4 py-2 rounded-lg bg-gray-100 focus:outline-none">
+                <i class="bi bi-search absolute right-3 top-3 text-gray-400"></i>
+                <div class="search-results p-2"></div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex-grow overflow-y-auto px-2">
+            <div class="space-y-1">
+                <!-- Dashboard -->
+                <div class="menu-item rounded-lg">
+                    <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="bi bi-grid text-xl"></i>
+                        <span class="ml-3 sidebar-text">Dashboard</span>
+                    </a>
+                </div>
+
+                <!-- Transactions -->
+                <div class="menu-parent">
+                    <div class="menu-item rounded-lg cursor-pointer">
+                        <div class="flex items-center justify-between p-3 text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="bi bi-credit-card text-xl"></i>
+                                <span class="ml-3 sidebar-text">Transactions</span>
+                            </div>
+                            <i class="bi bi-chevron-down sidebar-text"></i>
+                        </div>
+                    </div>
+                    <div class="submenu pl-12">
+                        <a href="#" class="block py-2 text-gray-600 hover:text-gray-800">All Transactions</a>
+                        <a href="#" class="block py-2 text-gray-600 hover:text-gray-800">Pending</a>
+                        <a href="#" class="block py-2 text-gray-600 hover:text-gray-800">Completed</a>
+                    </div>
+                </div>
+
+                <!-- Analytics -->
+                <div class="menu-parent">
+                    <div class="menu-item rounded-lg cursor-pointer">
+                        <div class="flex items-center justify-between p-3 text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="bi bi-graph-up text-xl"></i>
+                                <span class="ml-3 sidebar-text">Analytics</span>
+                            </div>
+                            <i class="bi bi-chevron-down sidebar-text"></i>
+                        </div>
+                    </div>
+                    <div class="submenu pl-12">
+                        <a href="#" class="block py-2 text-gray-600 hover:text-gray-800">Overview</a>
+                        <a href="#" class="block py-2 text-gray-600 hover:text-gray-800">Reports</a>
+                    </div>
+                </div>
+
+                <!-- Other menu items -->
+                <div class="menu-item rounded-lg">
+                    <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="bi bi-gear text-xl"></i>
+                        <span class="ml-3 sidebar-text">Settings</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Profile -->
+        <div class="mt-auto">
+            <div class="profile-section p-4 cursor-pointer">
+                <div class="flex items-center" id="profileToggle">
+                    <img src="https://ui-avatars.com/api/?name=John+Doe" class="w-10 h-10 rounded-full">
+                    <div class="ml-3 sidebar-text">
+                        <div class="font-medium">John Doe</div>
+                        <div class="text-sm text-gray-500">Admin</div>
+                    </div>
+                </div>
+                <div class="profile-dropdown mt-2">
+                    <a href="#" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded-lg">Profile</a>
+                    <a href="#" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded-lg">Settings</a>
+                </div>
+            </div>
+
+            <!-- Logout -->
+            <div class="p-4 border-t">
+                <button class="flex items-center w-full p-2 text-red-500 hover:bg-red-50 rounded-lg">
+                    <i class="bi bi-box-arrow-right text-xl"></i>
+                    <span class="ml-3 sidebar-text">Logout</span>
+                </button>
+                <div class="mt-2 text-xs text-gray-500 sidebar-text" id="ipLocation"></div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const searchInput = document.getElementById('menuSearch');
+    const searchResults = document.querySelector('.search-results');
+    const menuParents = document.querySelectorAll('.menu-parent');
+    const profileToggle = document.getElementById('profileToggle');
+    const profileDropdown = document.querySelector('.profile-dropdown');
+
+    // Initialize submenus
+    menuParents.forEach(parent => {
+        const toggle = parent.querySelector('.menu-item');
+        const submenu = parent.querySelector('.submenu');
+        const chevron = parent.querySelector('.bi-chevron-down');
+
+        toggle.addEventListener('click', () => {
+            submenu.classList.toggle('open');
+            chevron.style.transform = submenu.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+        });
+    });
+
+    // Profile dropdown toggle
+    profileToggle.addEventListener('click', () => {
+        profileDropdown.classList.toggle('open');
+    });
+
+    // Toggle Sidebar
+    sidebarToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('collapsed');
+        const isCollapsed = sidebar.classList.contains('collapsed');
+        sidebarToggle.querySelector('i').classList.toggle('bi-arrow-left-circle');
+        sidebarToggle.querySelector('i').classList.toggle('bi-arrow-right-circle');
+    });
+
+    // Enhanced Search Functionality
+    function createSearchIndex() {
+        const searchIndex = [];
+        document.querySelectorAll('.menu-parent').forEach(parent => {
+            const header = parent.querySelector('.menu-item').textContent.trim();
+            const items = Array.from(parent.querySelectorAll('.submenu a')).map(item => ({
+                text: item.textContent.trim(),
+                element: item,
+                header: header
+            }));
+            searchIndex.push(...items);
+        });
+        return searchIndex;
+    }
+
+    const searchIndex = createSearchIndex();
+
+    // Menu Search
+    searchInput.addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        if (searchTerm.length === 0) {
+            searchResults.style.display = 'none';
+            return;
+        }
+
+        const matches = searchIndex.filter(item => 
+            item.text.toLowerCase().includes(searchTerm) ||
+            item.header.toLowerCase().includes(searchTerm)
+        );
+
+        if (matches.length > 0) {
+            searchResults.style.display = 'block';
+            const groupedMatches = matches.reduce((acc, match) => {
+                if (!acc[match.header]) acc[match.header] = [];
+                acc[match.header].push(match);
+                return acc;
+            }, {});
+
+            searchResults.innerHTML = Object.entries(groupedMatches)
+                .map(([header, items]) => `
+                    <div class="p-2">
+                        <div class="font-semibold text-gray-700">${header}</div>
+                        ${items.map(item => `
+                            <a href="#" class="block py-1 px-3 text-gray-600 hover:bg-gray-100 rounded">
+                                ${item.text}
+                            </a>
+                        `).join('')}
+                    </div>
+                `).join('');
+        } else {
+            searchResults.style.display = 'none';
+        }
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!profileToggle.contains(e.target) && !profileDropdown.contains(e.target)) {
+            profileDropdown.classList.remove('open');
+        }
+    });
+
+    // Hide search results when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+            searchResults.style.display = 'none';
+        }
+    });
+
+    // Fetch IP and Location
+    fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+            fetch(`https://ipapi.co/${data.ip}/json/`)
+                .then(response => response.json())
+                .then(locationData => {
+                    document.getElementById('ipLocation').textContent = 
+                        `IP: ${data.ip} | ${locationData.city}, ${locationData.country_name}`;
+                });
+        });
+});
+</script>
+
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
